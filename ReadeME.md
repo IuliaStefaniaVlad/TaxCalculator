@@ -18,10 +18,9 @@ Later on in the development other ideas occurred (and I think those could've bee
 
 ## Overview
 
-### Scenarios - TBD - diagram
-
-
-
+### Resource links
+- Backend API : https://taxcalculatorapi.azurewebsites.net/swagger/index.html
+- Frontend Client : https://taxcalculatorclient.azurewebsites.net/ 
 
 ## Technical details
 
@@ -66,7 +65,7 @@ The application itself is formed of 4 main screens:
 - The UI is deployed (unfortunately) in the same way... because I didn't use the proper Blazor Project to deploy it as a static app.
 
 ### Flow
-- I did not expose the Register User endpoint to UI because of safety reasons. In a real enterprise level application, the Register part would be in another application that only a super-user has access to and can register Admins that are able to 
+- I did not expose the Register User functionality in the UI because of safety reasons. In a real enterprise level application, the Register part would be in another application that only a super-user has access to and can register Admins that are able to 
 make the CRUD opperations on tax bands. You can make an API request to the Register endpoint to register an admin user for further use. 
 
 ### Hr ETL Project vs Tax Calculator Project
