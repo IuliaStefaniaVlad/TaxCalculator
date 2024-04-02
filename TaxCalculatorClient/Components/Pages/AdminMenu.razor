@@ -1,0 +1,104 @@
+﻿@using TaxCalculator.Models.Shared;
+@page "/AdminMenu"
+@inject NavigationManager _navigationManager
+
+<PageTitle>Administrator Menu</PageTitle>
+    <MudPaper Outlined="true" Class="ma-4">
+    <p hidden="@hidden" style="color:red" Value="@error">@error</p>
+        <MudGrid>
+            <MudItem xs="6" Style="margin-left:10px;">
+                <MudSelect @bind-Value="@selectedCountry" T="CountryTaxBandsModel" Label="Country">
+                    @foreach (var country in countryTaxBandsModels)
+                        {
+                    <MudSelectItem T="CountryTaxBandsModel" Value="@country">@country.Country</MudSelectItem>
+                        }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="3">
+            <MudButton Style="margin:10px;" OnClick="CreateTaxBands" Color="Color.Primary">
+                Add country tax bands
+            </MudButton>
+            </MudItem>
+        </MudGrid>
+
+        @if (selectedCountry is not null)
+        {
+
+            <MudTable Items="@selectedCountry.TaxBands" Hover="true" Class="ma-4">
+                <HeaderContent>
+                    <MudTh>Tax Band</MudTh>
+                    <MudTh>Annual Salary Range</MudTh>
+                    <MudTh>Tax Rate (%)</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTh DataLabel="Tax Band">@context.BandOrder</MudTh>
+                    @if (context.MaxRange > 0)
+                    {
+                        <MudTh DataLabel="Annual Salary Range">@context.MinRange - @context.MaxRange</MudTh>
+                    }
+                    else
+                    {
+                        <MudTh DataLabel="Annual Salary Range">@context.MinRange+</MudTh>
+                    }
+                    <MudTh DataLabel="Tax Rate (%)">@context.TaxRate</MudTh>
+                </RowTemplate>
+            </MudTable>
+
+            <MudButton Style="margin:10px;" OnClick="DeleteTaxBands" Color="Color.Error">
+               Delete country tax bands
+            </MudButton>
+            <MudButton Color.Primary OnClick="EditTaxBands" Color="Color.Primary">
+                Edit country tax bands
+            </MudButton>
+      
+        }
+
+        @if (selectedCountry is null && (isCreate || isEdit))
+        {
+        <MudTextField @bind-Value="newCountryModel.Country" Label="Country Name" Variant="Variant.Text" ></MudTextField>
+
+        <MudTable Items="@newCountryModel.TaxBands" Hover="true" Class="ma-4" CommitEditTooltip="Commit Edit">
+            <HeaderContent>
+                    <MudTh>Tax Band</MudTh>
+                    <MudTh>Min Range</MudTh>
+                    <MudTh>Max Range</MudTh>
+                    <MudTh>Tax Rate (%)</MudTh>
+                    <MudTh></MudTh>
+
+                    </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Tax Band">@context.BandOrder</MudTd>
+                <MudTd DataLabel="Min Range">@context.MinRange</MudTd>
+                <MudTd DataLabel="Max Range">@context.MaxRange</MudTd>
+                <MudTd DataLabel="Tax Rate (%)">@context.TaxRate</MudTd>
+                <MudTd>
+                    <MudButton @onclick="() => RemoveTaxBand(context)" Color="Color.Error">
+                        Delete Tax Range
+                    </MudButton>
+                </MudTd>
+            </RowTemplate>
+                <RowEditingTemplate>
+                    <MudTd DataLabel="Tax Band">@context.BandOrder</MudTd>
+                    <MudTd DataLabel="Min Range">
+                                <MudNumericField @bind-Value="@context.MinRange" Required Min="0" />
+                            </MudTd>
+                    <MudTd DataLabel="Max Range">
+                                <MudNumericField @bind-Value="@context.MaxRange"  Min="1" />
+                            </MudTd>
+                    <MudTd DataLabel="Tax Rate (%)">@context.TaxRate>
+                        <MudNumericField @bind-Value="@context.TaxRate" Required Min="0" />
+
+                    </MudTd>
+                </RowEditingTemplate>
+
+            </MudTable>
+            <MudButton Style="margin:10px;" OnClick="AddTaxBand" Color="Color.Primary">
+                Add Tax Range
+            </MudButton>
+        <MudButton Style="margin:10px;" OnClick="SaveTaxBands" Color="Color.Primary">
+                Save
+            </MudButton>
+        }
+    </MudPaper>
+
+

@@ -1,0 +1,74 @@
+﻿@page "/TaxCalculator"
+@using TaxCalculator.Models.Shared
+
+<PageTitle>Tax Calculator</PageTitle>
+
+<h1>Calculate your taxes!</h1>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="pa-4">
+    <MudPaper Outlined="true" Class="ma-4">
+        <p hidden="@hidden" style="color:red" Value="@error">@error</p>
+
+        <MudGrid Spacing="2" Class="d-flex align-center justify-center mud-width-full py-8">
+            <MudItem>
+                <MudText>Gross Annual Salary: </MudText>
+            </MudItem>
+            <MudItem>
+                <MudTextField @bind-Value="grossAnnualSalary" Variant="Variant.Outlined" Margin="Margin.Dense" />
+            </MudItem>
+            <MudItem>
+                <MudButton OnClick="CalculateTax">
+                    <MudText>Calc</MudText>
+                </MudButton>
+            </MudItem>
+            <MudItem>
+                <MudSelect @bind-Value="@selectedCountry" T="CountryTaxBandsModel" Label="Country">
+                    @foreach (var country in countryTaxBandsModels)
+                    {
+                        <MudSelectItem T="CountryTaxBandsModel" Value="@country">@country.Country</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+    @if (selectedCountry is not null)
+    {
+        <MudPaper Outlined="true" Class="ma-4">
+
+            <MudTable Items="@selectedCountry.TaxBands" Hover="true" Class="ma-4 ">
+                <HeaderContent>
+                    <MudTh>Tax Band</MudTh>
+                    <MudTh>Annual Salary Range</MudTh>
+                    <MudTh>Tax Rate (%)</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTh DataLabel="Tax Band">@context.BandOrder</MudTh>
+                    @if (context.MaxRange > 0)
+                    {
+                        <MudTh DataLabel="Annual Salary Range">@context.MinRange - @context.MaxRange</MudTh>
+                    }
+                    else
+                    {
+                        <MudTh DataLabel="Annual Salary Range">@context.MinRange+</MudTh>
+                    }
+                    <MudTh DataLabel="Tax Rate (%)">@context.TaxRate</MudTh>
+                </RowTemplate>
+            </MudTable>
+
+        </MudPaper>
+    }
+    @if (calculationResult is not null)
+    {
+        <MudPaper Outlined="true" Class="ma-4 ">
+            <MudText>Gross Annual Salary : @calculationResult.GrossAnnualSalary</MudText>
+            <MudText>Gross Monthly Salary : @calculationResult.GrossMonthlySalary</MudText>
+            <MudText>Net Annual Salary : @calculationResult.NetAnnualSalary</MudText>
+            <MudText>Net Monthly Salary : @calculationResult.NetMonthlySalary</MudText>
+            <MudText>Annual Tax Paid : @calculationResult.AnnualTax</MudText>
+            <MudText>Monthly Tax Paid : @calculationResult.MonthlyTax</MudText>
+        </MudPaper>
+
+    }
+</MudContainer>
+
+

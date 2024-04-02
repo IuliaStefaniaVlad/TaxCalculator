@@ -1,0 +1,32 @@
+﻿@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager _navigationManager
+
+@page "/Login"
+
+<PageTitle>Login</PageTitle>
+<p hidden="@hidden" style="color:red">
+    Invalid username or password
+</p>
+<MudContainer>
+    <MudGrid>
+        <MudItem xs="12" sm="7">
+            <MudPaper Class="pa-4">
+                <MudForm @bind-IsValid="@success">
+                    <MudTextField T="string" Label="Username" @ref="username" Required="true" RequiredError="User name is required!" />
+                    <MudTextField T="string" Label="Password" @ref="pwField"
+                                  InputType="InputType.Password"
+                                  Required="true"
+                                  RequiredError="Password is required!" />
+                    <div class="d-flex align-center justify-space-between">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto"
+                                    OnClick="LoginUser"
+                        >Login</MudButton>
+                    </div>
+                </MudForm>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+

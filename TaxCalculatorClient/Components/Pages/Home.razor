@@ -1,0 +1,18 @@
+﻿@inject NavigationManager _navigationManager
+@page "/"
+
+
+<PageTitle>Tax Calculator</PageTitle>
+<MudContainer>
+    <h1>Welcome to Tax Calculator!</h1>
+</MudContainer>
+<MudContainer>
+    <MudButton Variant="Variant.Filled" Color="Color.Transparent" OnClick="@(() => _navigationManager.NavigateTo("/Login") )">Login as Administrator</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Transparent" OnClick="@(() => _navigationManager.NavigateTo("/TaxCalculator") )">Tax Calculator</MudButton>
+</MudContainer>
+
+
+@code {
+
+
+}
